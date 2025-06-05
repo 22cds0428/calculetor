@@ -1,174 +1,542 @@
-<html>
-    <head>
-        <title>calculater</title>
-        <style>
-            
-                body {
-                    background-color: #333;
-                    color:rgb(248, 249, 250);
-                    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    margin: 0;
-                }
-            
-                .cal {
-                    border: 1px solid #444;
-                    text-align: center;
-                    border-radius: 20px;
-                    background-color: #131212;
-                    padding: 20px;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                    width: 300px;
-                    color:rgb(252, 251, 251)
-                }
-            
-                h1 {
-                    margin-bottom: 20px;
-                    font-size: 24px;
-                    color: #0af;
-                }
-            
-                input {
-                    border-radius: 15px;
-                    height: 30px;
-                    width: 80%;
-                    padding: 5px 10px;
-                    border: 1px solid #555;
-                    background-color: #222;
-                    color: #fff;
-                    margin-bottom: 15px;
-                    font-size: 16px;
-                }
-            
-                input:focus {
-                    outline: none;
-                    border-color: #0af;
-                }
-            
-                button {
-                    width: 90%;
-                    margin-top: 10px;
-                    height: 40px;
-                    border-radius: 12px;
-                    border: none;
-                    background-color: #0af;
-                    color: #fff;
-                    font-size: 16px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                }
-            
-                button:hover {
-                    background-color: #09c;
-                    
-                }
-            
-                #result {
-                    display: block;
-                    margin-top: 20px;
-                    padding: 10px;
-                    border: 1px solid #555;
-                    border-radius: 10px;
-                    background-color: #222;
-                    color: #fff;
-                    font-size: 18px;
-                }
-            
-        </style>
-    </head>
-    <body>
-        <div class="cal">
-        <h1>Calculator</h1>
-        number 1: <input type="number" id="no1" placeholder="enter 1st no"><br><br>
-        number 2: <input type="number" id="no2" placeholder="enter 2nd no"><br>
-        <button onclick="add()" > Addition </button><br>
-        <button onclick="substrack()" > Substraction </button><br>
-        <button onclick="multiple()" > Multiplication </button><br>
-        <button onclick="divide()" > Division </button><br>
-        <span id ="result" > result </span>
-        <div> 
-        <hr>
-<h2>🎯 Random Math Quiz</h2>
-<p id="quiz-question">Click "Start Quiz" to begin!</p>
-<input type="number" id="quiz-answer" placeholder="Your answer">
-<br>
-<button onclick="checkQuizAnswer()">Submit Answer</button>
-<button onclick="generateQuiz()">Start Quiz</button>
-<br>
-<span id="quiz-result"></span>
-
-        <script>   
-            function add(){
-                let no1=parseFloat(document.getElementById("no1").value);
-                let no2=parseFloat(document.getElementById("no2").value);
-                let total=no1+no2;
-                document.getElementById("result").innerText='result is '+total;
-            }
-            function substrack(){
-                let no1=parseFloat(document.getElementById("no1").value);
-                let no2=parseFloat(document.getElementById("no2").value);
-                let total=no1-no2;
-                document.getElementById("result").innerText='result is '+total;
-            }
-            function multiple(){
-                let no1=parseFloat(document.getElementById("no1").value);
-                let no2=parseFloat(document.getElementById("no2").value);
-                let total=no1*no2;
-                document.getElementById("result").innerText='result is '+total;
-            }
-            function divide(){
-                let no1=parseFloat(document.getElementById("no1").value);
-                let no2=parseFloat(document.getElementById("no2").value);
-                let total=no1/no2;
-                document.getElementById("result").innerText='result is ' +total;
-            }
-            
-
-            let correctAnswer = null;
-
-function generateQuiz() {
-    const num1 = Math.floor(Math.random() * 20) + 1;
-    const num2 = Math.floor(Math.random() * 20) + 1;
-    const operations = ['+', '-', '*', '/'];
-    const op = operations[Math.floor(Math.random() * operations.length)];
-
-    let question = `${num1} ${op} ${num2}`;
-    document.getElementById("quiz-question").innerText = "Solve: " + question;
-
-    switch (op) {
-        case '+': correctAnswer = num1 + num2; break;
-        case '-': correctAnswer = num1 - num2; break;
-        case '*': correctAnswer = num1 * num2; break;
-        case '/': correctAnswer = parseFloat((num1 / num2).toFixed(2)); break;
-    }
-
-    document.getElementById("quiz-result").innerText = "";
-    document.getElementById("quiz-answer").value = "";
-}
-
-function checkQuizAnswer() {
-    const userAnswer = parseFloat(document.getElementById("quiz-answer").value);
-    const resultEl = document.getElementById("quiz-result");
-
-    if (isNaN(userAnswer)) {
-        resultEl.innerText = "⚠️ Please enter a number.";
-        resultEl.style.color = "orange";
-        return;
-    }
-
-    if (Math.abs(userAnswer - correctAnswer) < 0.01) {
-        resultEl.innerText = "✅ Correct!";
-        resultEl.style.color = "green";
-    } else {
-        resultEl.innerText = `❌ Incorrect. Correct answer: ${correctAnswer}`;
-        resultEl.style.color = "red";
-    }
-}
-
-        </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Calculator Pro</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
-    </body>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .bg-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .calculator-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            width: 420px;
+            max-width: 90vw;
+            animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .calculator-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #e0e7ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)); }
+            to { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); }
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .calc-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .calc-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .calc-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+            transform: scale(1.02);
+        }
+
+        .calc-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .calc-button {
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .calc-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .calc-button:hover::before {
+            left: 100%;
+        }
+
+        .calc-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .calc-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .calc-button.add { background: linear-gradient(135deg, #10b981, #059669); }
+        .calc-button.subtract { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .calc-button.multiply { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .calc-button.divide { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .result-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .result-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quiz-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quiz-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .quiz-question {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quiz-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quiz-button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .quiz-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .quiz-result.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(96, 165, 250, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 480px) {
+            .calculator-container {
+                padding: 25px;
+                width: 95vw;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <div class="calculator-container">
+        <div class="header">
+            <h1 class="title">Calculator Pro</h1>
+            <p class="subtitle">Professional Computing Interface</p>
+        </div>
+
+        <div class="calc-section">
+            <div class="input-group">
+                <label class="input-label">First Number</label>
+                <input type="number" id="no1" class="calc-input" placeholder="Enter first number">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Second Number</label>
+                <input type="number" id="no2" class="calc-input" placeholder="Enter second number">
+            </div>
+
+            <div class="button-grid">
+                <button class="calc-button add" onclick="performOperation('add')">
+                    ➕ Addition
+                </button>
+                <button class="calc-button subtract" onclick="performOperation('subtract')">
+                    ➖ Subtraction
+                </button>
+                <button class="calc-button multiply" onclick="performOperation('multiply')">
+                    ✖️ Multiplication
+                </button>
+                <button class="calc-button divide" onclick="performOperation('divide')">
+                    ➗ Division
+                </button>
+            </div>
+
+            <div class="result-display">
+                <div id="result" class="result-text">Ready to calculate...</div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2 class="quiz-title">🎯 Math Challenge</h2>
+            <div id="quiz-question" class="quiz-question">
+                Click "Start Challenge" to begin!
+            </div>
+            <input type="number" id="quiz-answer" class="calc-input" placeholder="Your answer" style="margin-bottom: 10px;">
+            <div class="quiz-controls">
+                <button class="quiz-button" onclick="checkQuizAnswer()">Submit</button>
+                <button class="quiz-button" onclick="generateQuiz()">Start Challenge</button>
+            </div>
+            <div id="quiz-result" class="quiz-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Create animated background particles
+        function createParticles() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                bgAnimation.appendChild(particle);
+            }
+        }
+
+        // Calculator functions
+        function performOperation(operation) {
+            const no1 = parseFloat(document.getElementById("no1").value);
+            const no2 = parseFloat(document.getElementById("no2").value);
+            const resultEl = document.getElementById("result");
+
+            if (isNaN(no1) || isNaN(no2)) {
+                showResult("⚠️ Please enter valid numbers", "orange");
+                return;
+            }
+
+            let result;
+            let symbol;
+            
+            switch(operation) {
+                case 'add':
+                    result = no1 + no2;
+                    symbol = '+';
+                    break;
+                case 'subtract':
+                    result = no1 - no2;
+                    symbol = '-';
+                    break;
+                case 'multiply':
+                    result = no1 * no2;
+                    symbol = '×';
+                    break;
+                case 'divide':
+                    if (no2 === 0) {
+                        showResult("❌ Cannot divide by zero", "red");
+                        return;
+                    }
+                    result = no1 / no2;
+                    symbol = '÷';
+                    break;
+            }
+
+            const formattedResult = Number.isInteger(result) ? result : result.toFixed(2);
+            showResult(`${no1} ${symbol} ${no2} = ${formattedResult}`, "#10b981");
+        }
+
+        function showResult(text, color = "white") {
+            const resultEl = document.getElementById("result");
+            resultEl.classList.remove("show");
+            
+            setTimeout(() => {
+                resultEl.textContent = text;
+                resultEl.style.color = color;
+                resultEl.classList.add("show");
+            }, 200);
+        }
+
+        // Quiz functionality
+        let correctAnswer = null;
+
+        function generateQuiz() {
+            const num1 = Math.floor(Math.random() * 20) + 1;
+            const num2 = Math.floor(Math.random() * 20) + 1;
+            const operations = ['+', '-', '*', '/'];
+            const op = operations[Math.floor(Math.random() * operations.length)];
+
+            let question = `${num1} ${op} ${num2}`;
+            document.getElementById("quiz-question").innerHTML = `<strong>Solve: ${question}</strong>`;
+
+            switch (op) {
+                case '+': correctAnswer = num1 + num2; break;
+                case '-': correctAnswer = num1 - num2; break;
+                case '*': correctAnswer = num1 * num2; break;
+                case '/': correctAnswer = parseFloat((num1 / num2).toFixed(2)); break;
+            }
+
+            document.getElementById("quiz-result").classList.remove("show");
+            document.getElementById("quiz-answer").value = "";
+            document.getElementById("quiz-answer").focus();
+        }
+
+        function checkQuizAnswer() {
+            const userAnswer = parseFloat(document.getElementById("quiz-answer").value);
+            const resultEl = document.getElementById("quiz-result");
+
+            if (isNaN(userAnswer)) {
+                showQuizResult("⚠️ Please enter a number.", "orange");
+                return;
+            }
+
+            if (Math.abs(userAnswer - correctAnswer) < 0.01) {
+                showQuizResult("✅ Excellent! Correct answer!", "#10b981");
+                setTimeout(generateQuiz, 2000); // Auto-generate new question
+            } else {
+                showQuizResult(`❌ Incorrect. The answer is ${correctAnswer}`, "#ef4444");
+            }
+        }
+
+        function showQuizResult(text, color) {
+            const resultEl = document.getElementById("quiz-result");
+            resultEl.textContent = text;
+            resultEl.style.backgroundColor = color + "20";
+            resultEl.style.color = color;
+            resultEl.style.border = `1px solid ${color}40`;
+            resultEl.classList.add("show");
+        }
+
+        // Add enter key support for inputs
+        document.getElementById("quiz-answer").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                checkQuizAnswer();
+            }
+        });
+
+        // Add pulse effect to focused inputs
+        document.querySelectorAll('.calc-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.classList.add('pulse');
+            });
+            input.addEventListener('blur', function() {
+                this.classList.remove('pulse');
+            });
+        });
+
+        // Initialize particles when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+    </script>
+</body>
 </html>
