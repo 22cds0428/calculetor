@@ -828,4 +828,292 @@
                 if (this.value) {
                     this.style.background = 'linear-gradient(145deg, rgba(0, 245, 255, 0.1), rgba(255,255,255,0.05))';
                 } else {
-                    this.style.background = 'linear-gradient(145deg, rgba(255,255,
+                    this.style.background = 'linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))';
+                }
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case '1': e.preventDefault(); performOperation('add'); break;
+                    case '2': e.preventDefault(); performOperation('subtract'); break;
+                    case '3': e.preventDefault(); performOperation('multiply'); break;
+                    case '4': e.preventDefault(); performOperation('divide'); break;
+                    case 'q': e.preventDefault(); generateQuiz(); break;
+                }
+            }
+        });
+
+        // Enter key support
+        document.getElementById("quiz-answer").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                checkQuizAnswer();
+            }
+        });
+
+        document.querySelectorAll('.calc-input').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === "Enter") {
+                    const inputs = Array.from(document.querySelectorAll('.calc-input'));
+                    const currentIndex = inputs.indexOf(this);
+                    if (currentIndex < inputs.length - 1) {
+                        inputs[currentIndex + 1].focus();
+                    }
+                }
+            });
+        });
+
+        // Advanced button interactions
+        document.querySelectorAll('.calc-button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) rotateX(10deg) scale(1.05)';
+                this.style.transition = 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
+            });
+            
+            button.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(-4px) rotateX(5deg) scale(1.02)';
+                
+                // Create ripple effect
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255,255,255,0.6)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.left = '50%';
+                ripple.style.top = '50%';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.marginLeft = '-10px';
+                ripple.style.marginTop = '-10px';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            .matrix-rain {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: -1;
+                overflow: hidden;
+            }
+            
+            .matrix-char {
+                position: absolute;
+                color: #00ff41;
+                font-family: 'Courier New', monospace;
+                font-size: 14px;
+                opacity: 0.7;
+                animation: matrixFall 3s linear infinite;
+            }
+            
+            @keyframes matrixFall {
+                0% {
+                    transform: translateY(-100vh);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 0.7;
+                }
+                90% {
+                    opacity: 0.7;
+                }
+                100% {
+                    transform: translateY(100vh);
+                    opacity: 0;
+                }
+            }
+            
+            .success-burst {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                width: 100px;
+                height: 100px;
+                margin: -50px 0 0 -50px;
+                border-radius: 50%;
+                background: radial-gradient(circle, #00ff88, transparent);
+                opacity: 0;
+                transform: scale(0);
+                animation: successBurst 0.8s ease-out;
+                pointer-events: none;
+                z-index: 1000;
+            }
+            
+            @keyframes successBurst {
+                0% {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(2);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(4);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Matrix rain effect (optional - can be triggered)
+        function createMatrixRain() {
+            const matrixContainer = document.createElement('div');
+            matrixContainer.className = 'matrix-rain';
+            document.body.appendChild(matrixContainer);
+            
+            const chars = '01';
+            
+            for (let i = 0; i < 50; i++) {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                char.style.left = Math.random() * 100 + '%';
+                char.style.animationDelay = Math.random() * 3 + 's';
+                char.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                matrixContainer.appendChild(char);
+            }
+            
+            setTimeout(() => {
+                matrixContainer.remove();
+            }, 5000);
+        }
+
+        // Success burst effect
+        function createSuccessBurst() {
+            const burst = document.createElement('div');
+            burst.className = 'success-burst';
+            document.body.appendChild(burst);
+            
+            setTimeout(() => {
+                burst.remove();
+            }, 800);
+        }
+
+        // Enhanced success animation
+        function triggerSuccessAnimation() {
+            const shell = document.querySelector('.calculator-shell');
+            shell.style.animation = 'none';
+            setTimeout(() => {
+                shell.style.animation = 'shellGlow 3s ease-in-out infinite alternate';
+            }, 10);
+            
+            createSuccessBurst();
+        }
+
+        // Voice feedback (optional - modern browsers)
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.8;
+                utterance.pitch = 1.2;
+                utterance.volume = 0.3;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Advanced number formatting
+        function formatNumber(num) {
+            if (Math.abs(num) >= 1e6) {
+                return (num / 1e6).toFixed(2) + 'M';
+            } else if (Math.abs(num) >= 1e3) {
+                return (num / 1e3).toFixed(2) + 'K';
+            }
+            return num.toString();
+        }
+
+        // Gesture support for mobile
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndY = e.changedTouches[0].screenY;
+            handleGesture();
+        });
+
+        function handleGesture() {
+            const swipeThreshold = 50;
+            if (touchEndY < touchStartY - swipeThreshold) {
+                // Swipe up - generate quiz
+                generateQuiz();
+            }
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            createAdvancedParticles();
+            
+            // Welcome animation
+            setTimeout(() => {
+                showResult("QUANTUM CALCULATOR ONLINE", "#00f5ff");
+            }, 1000);
+            
+            // Auto-focus first input
+            document.getElementById('no1').focus();
+            
+            // Add subtle screen flicker effect
+            setInterval(() => {
+                if (Math.random() < 0.02) { // 2% chance every interval
+                    document.body.style.filter = 'brightness(1.1) contrast(1.1)';
+                    setTimeout(() => {
+                        document.body.style.filter = 'brightness(1) contrast(1)';
+                    }, 50);
+                }
+            }, 100);
+        });
+
+        // Performance monitoring
+        let frameCount = 0;
+        let lastTime = performance.now();
+
+        function measureFPS() {
+            frameCount++;
+            const currentTime = performance.now();
+            
+            if (currentTime >= lastTime + 1000) {
+                const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+                lastTime = currentTime;
+                frameCount = 0;
+                
+                // Adjust particle count based on performance
+                if (fps < 30) {
+                    const particles = document.querySelectorAll('.particle');
+                    for (let i = particles.length - 1; i >= particles.length / 2; i--) {
+                        particles[i].remove();
+                    }
+                }
+            }
+            
+            requestAnimationFrame(measureFPS);
+        }
+
+        measureFPS();
