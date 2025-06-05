@@ -90,7 +90,15 @@
         <button onclick="divide()" > Division </button><br>
         <span id ="result" > result </span>
         <div> 
-        
+        <hr>
+<h2>🎯 Random Math Quiz</h2>
+<p id="quiz-question">Click "Start Quiz" to begin!</p>
+<input type="number" id="quiz-answer" placeholder="Your answer">
+<br>
+<button onclick="checkQuizAnswer()">Submit Answer</button>
+<button onclick="generateQuiz()">Start Quiz</button>
+<br>
+<span id="quiz-result"></span>
 
         <script>   
             function add(){
@@ -118,6 +126,48 @@
                 document.getElementById("result").innerText='result is ' +total;
             }
             
+
+            let correctAnswer = null;
+
+function generateQuiz() {
+    const num1 = Math.floor(Math.random() * 20) + 1;
+    const num2 = Math.floor(Math.random() * 20) + 1;
+    const operations = ['+', '-', '*', '/'];
+    const op = operations[Math.floor(Math.random() * operations.length)];
+
+    let question = `${num1} ${op} ${num2}`;
+    document.getElementById("quiz-question").innerText = "Solve: " + question;
+
+    switch (op) {
+        case '+': correctAnswer = num1 + num2; break;
+        case '-': correctAnswer = num1 - num2; break;
+        case '*': correctAnswer = num1 * num2; break;
+        case '/': correctAnswer = parseFloat((num1 / num2).toFixed(2)); break;
+    }
+
+    document.getElementById("quiz-result").innerText = "";
+    document.getElementById("quiz-answer").value = "";
+}
+
+function checkQuizAnswer() {
+    const userAnswer = parseFloat(document.getElementById("quiz-answer").value);
+    const resultEl = document.getElementById("quiz-result");
+
+    if (isNaN(userAnswer)) {
+        resultEl.innerText = "⚠️ Please enter a number.";
+        resultEl.style.color = "orange";
+        return;
+    }
+
+    if (Math.abs(userAnswer - correctAnswer) < 0.01) {
+        resultEl.innerText = "✅ Correct!";
+        resultEl.style.color = "green";
+    } else {
+        resultEl.innerText = `❌ Incorrect. Correct answer: ${correctAnswer}`;
+        resultEl.style.color = "red";
+    }
+}
+
         </script>
         
     </body>
