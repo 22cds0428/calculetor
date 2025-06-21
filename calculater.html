@@ -109,6 +109,9 @@
        <div class="random"> 
         <hr>
         <h1>🎯 Random Math Quiz</h1>
+        <!-- Add this inside .random div after quiz-result -->
+        <p id="timer" style="font-size: 18px; margin-top: 10px; color: #0af;">⏱️ Time: 10s</p>
+
         <p id="quiz-question">Click "Start Quiz" to begin!</p>
         <input type="number" id="quiz-answer" placeholder="Your answer">
         <br>
@@ -192,6 +195,23 @@ function checkQuizAnswer() {
     document.getElementById("result").innerText = "result";
 }
     
+ function startTimer() {
+        timeLeft = 10;
+        document.getElementById("timer").innerText = `⏱️ Time: ${timeLeft}s`;
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById("timer").innerText = `⏱️ Time: ${timeLeft}s`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById("quiz-result").innerText = `⏰ Time's up! Correct answer: ${correctAnswer}`;
+                document.getElementById("quiz-result").style.color = "orange";
+                document.getElementById("quiz-answer").disabled = true;
+                document.querySelector('button[onclick="checkQuizAnswer()"]').disabled = true;
+            }
+        }, 1000);
+    }
         </script>
         
     </body>
