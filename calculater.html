@@ -121,81 +121,112 @@
         <span id="quiz-result"></span>
        </div>
      
-        <script>   
-            function add(){
-                let no1=parseFloat(document.getElementById("no1").value);
-                let no2=parseFloat(document.getElementById("no2").value);
-                let total=no1+no2;
-                document.getElementById("result").innerText='result is '+total;
-            }
-            function substrack(){
-                let no1=parseFloat(document.getElementById("no1").value);
-                let no2=parseFloat(document.getElementById("no2").value);
-                let total=no1-no2;
-                document.getElementById("result").innerText='result is '+total;
-            }
-            function multiple(){
-                let no1=parseFloat(document.getElementById("no1").value);
-                let no2=parseFloat(document.getElementById("no2").value);
-                let total=no1*no2;
-                document.getElementById("result").innerText='result is '+total;
-            }
-            function divide(){
-                let no1=parseFloat(document.getElementById("no1").value);
-                let no2=parseFloat(document.getElementById("no2").value);
-                let total=no1/no2;
-                document.getElementById("result").innerText='result is ' +total;
-            }
-            
+       <script>
+    let correctAnswer = null;
+    let timerInterval;
+    let timeLeft = 10;
 
-            let correctAnswer = null;
-
-function generateQuiz() {
-    const num1 = Math.floor(Math.random() * 20) + 1;
-    const num2 = Math.floor(Math.random() * 20) + 1;
-    const operations = ['+', '-', '*', '/'];
-    const op = operations[Math.floor(Math.random() * operations.length)];
-
-    let question = `${num1} ${op} ${num2}`;
-    document.getElementById("quiz-question").innerText = "Solve: " + question;
-
-    switch (op) {
-        case '+': correctAnswer = num1 + num2; break;
-        case '-': correctAnswer = num1 - num2; break;
-        case '*': correctAnswer = num1 * num2; break;
-        case '/': correctAnswer = parseFloat((num1 / num2).toFixed(2)); break;
+    function add() {
+        let no1 = parseFloat(document.getElementById("no1").value);
+        let no2 = parseFloat(document.getElementById("no2").value);
+        let total = no1 + no2;
+        document.getElementById("result").innerText = 'result is ' + total;
+        logHistory(`${no1} + ${no2} = ${total}`);
     }
 
-    document.getElementById("quiz-result").innerText = "";
-    document.getElementById("quiz-answer").value = "";
-}
-
-function checkQuizAnswer() {
-    const userAnswer = parseFloat(document.getElementById("quiz-answer").value);
-    const resultEl = document.getElementById("quiz-result");
-
-    if (isNaN(userAnswer)) {
-        resultEl.innerText = "⚠️ Please enter a number.";
-        resultEl.style.color = "orange";
-        return;
+    function substrack() {
+        let no1 = parseFloat(document.getElementById("no1").value);
+        let no2 = parseFloat(document.getElementById("no2").value);
+        let total = no1 - no2;
+        document.getElementById("result").innerText = 'result is ' + total;
+        logHistory(`${no1} - ${no2} = ${total}`);
     }
 
-    if (Math.abs(userAnswer - correctAnswer) < 0.01) {
-        resultEl.innerText = "✅ Correct!";
-        resultEl.style.color = "green";
-    } else {
-        resultEl.innerText = `❌ Incorrect. Correct answer: ${correctAnswer}`;
-        resultEl.style.color = "red";
+    function multiple() {
+        let no1 = parseFloat(document.getElementById("no1").value);
+        let no2 = parseFloat(document.getElementById("no2").value);
+        let total = no1 * no2;
+        document.getElementById("result").innerText = 'result is ' + total;
+        logHistory(`${no1} × ${no2} = ${total}`);
     }
-}
-    
+
+    function divide() {
+        let no1 = parseFloat(document.getElementById("no1").value);
+        let no2 = parseFloat(document.getElementById("no2").value);
+        if (no2 === 0) {
+            document.getElementById("result").innerText = "❌ Cannot divide by zero";
+            return;
+        }
+        let total = (no1 / no2).toFixed(2);
+        document.getElementById("result").innerText = 'result is ' + total;
+        logHistory(`${no1} ÷ ${no2} = ${total}`);
+    }
+
     function clearFields() {
-    document.getElementById("no1").value = "";
-    document.getElementById("no2").value = "";
-    document.getElementById("result").innerText = "result";
-}
-    
- function startTimer() {
+        document.getElementById("no1").value = "";
+        document.getElementById("no2").value = "";
+        document.getElementById("result").innerText = "result";
+    }
+
+    function logHistory(entry) {
+        const ul = document.getElementById("history");
+        const li = document.createElement("li");
+        li.innerText = entry;
+        ul.appendChild(li);
+    }
+
+    function generateQuiz() {
+        // Stop any previous timer
+        clearInterval(timerInterval);
+
+        const num1 = Math.floor(Math.random() * 20) + 1;
+        const num2 = Math.floor(Math.random() * 20) + 1;
+        const operations = ['+', '-', '*', '/'];
+        const op = operations[Math.floor(Math.random() * operations.length)];
+
+        let question = `${num1} ${op} ${num2}`;
+        document.getElementById("quiz-question").innerText = "Solve: " + question;
+
+        switch (op) {
+            case '+': correctAnswer = num1 + num2; break;
+            case '-': correctAnswer = num1 - num2; break;
+            case '*': correctAnswer = num1 * num2; break;
+            case '/': correctAnswer = parseFloat((num1 / num2).toFixed(2)); break;
+        }
+
+        // Reset UI
+        document.getElementById("quiz-result").innerText = "";
+        document.getElementById("quiz-answer").value = "";
+        document.getElementById("quiz-answer").disabled = false;
+        document.querySelector('button[onclick="checkQuizAnswer()"]').disabled = false;
+
+        startTimer();
+    }
+
+    function checkQuizAnswer() {
+        clearInterval(timerInterval); // stop timer
+        const userAnswer = parseFloat(document.getElementById("quiz-answer").value);
+        const resultEl = document.getElementById("quiz-result");
+
+        if (isNaN(userAnswer)) {
+            resultEl.innerText = "⚠️ Please enter a number.";
+            resultEl.style.color = "orange";
+            return;
+        }
+
+        if (Math.abs(userAnswer - correctAnswer) < 0.01) {
+            resultEl.innerText = "✅ Correct!";
+            resultEl.style.color = "green";
+        } else {
+            resultEl.innerText = `❌ Incorrect. Correct answer: ${correctAnswer}`;
+            resultEl.style.color = "red";
+        }
+
+        document.getElementById("quiz-answer").disabled = true;
+        document.querySelector('button[onclick="checkQuizAnswer()"]').disabled = true;
+    }
+
+    function startTimer() {
         timeLeft = 10;
         document.getElementById("timer").innerText = `⏱️ Time: ${timeLeft}s`;
 
@@ -212,7 +243,8 @@ function checkQuizAnswer() {
             }
         }, 1000);
     }
-        </script>
+</script>
+
         
     </body>
 </html>
