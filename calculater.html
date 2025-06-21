@@ -12,9 +12,20 @@
                     align-items: center;
                     height: 100vh;
                     margin: 0;
+                    gap:10px;
                 }
             
-                .cal {
+                .cal{
+                    border: 1px solid #444;
+                    text-align: center;
+                    border-radius: 20px;
+                    background-color: #131212;
+                    padding: 20px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                    width: 300px;
+                    color:rgb(252, 251, 251)
+                }
+                .random{
                     border: 1px solid #444;
                     text-align: center;
                     border-radius: 20px;
@@ -65,7 +76,7 @@
                     background-color: #09c;
                     
                 }
-            
+                
                 #result {
                     display: block;
                     margin-top: 20px;
@@ -80,7 +91,8 @@
         </style>
     </head>
     <body>
-        <div class="cal">
+     <div class="cal">
+        <hr>
         <h1>Calculator</h1>
         number 1: <input type="number" id="no1" placeholder="enter 1st no"><br><br>
         number 2: <input type="number" id="no2" placeholder="enter 2nd no"><br>
@@ -88,18 +100,24 @@
         <button onclick="substrack()" > Substraction </button><br>
         <button onclick="multiple()" > Multiplication </button><br>
         <button onclick="divide()" > Division </button><br>
-        <span id ="result" > result </span>
-        <div> 
-        <hr>
-<h2>🎯 Random Math Quiz</h2>
-<p id="quiz-question">Click "Start Quiz" to begin!</p>
-<input type="number" id="quiz-answer" placeholder="Your answer">
-<br>
-<button onclick="checkQuizAnswer()">Submit Answer</button>
-<button onclick="generateQuiz()">Start Quiz</button>
-<br>
-<span id="quiz-result"></span>
+        <button onclick="clearFields()">Clear</button>
+        <ul id="history"></ul>
 
+
+        <span id ="result" > result </span>
+     </div>
+       <div class="random"> 
+        <hr>
+        <h1>🎯 Random Math Quiz</h1>
+        <p id="quiz-question">Click "Start Quiz" to begin!</p>
+        <input type="number" id="quiz-answer" placeholder="Your answer">
+        <br>
+        <button onclick="checkQuizAnswer()">Submit Answer</button>
+        <button onclick="generateQuiz()">Start Quiz</button>
+        <br>
+        <span id="quiz-result"></span>
+       </div>
+     
         <script>   
             function add(){
                 let no1=parseFloat(document.getElementById("no1").value);
@@ -167,7 +185,13 @@ function checkQuizAnswer() {
         resultEl.style.color = "red";
     }
 }
-
+    
+    function clearFields() {
+    document.getElementById("no1").value = "";
+    document.getElementById("no2").value = "";
+    document.getElementById("result").innerText = "result";
+}
+    
         </script>
         
     </body>
