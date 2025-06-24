@@ -326,10 +326,10 @@ p#quiz-question, p#icon-question {
     }
 
     // Icon quiz
-    {% comment %} let iconCorrectAnswer = null;
+     let iconCorrectAnswer = null;
     let iconTimerInterval;
     let iconTimeLeft = 15;
-    let iconScore = { correct: 0, wrong: 0 }; {% endcomment %}
+    let iconScore = { correct: 0, wrong: 0 }; 
 
     function updateIconScore() {
         document.getElementById("icon-score").innerText = `✅ Score: ${iconScore.correct} | ❌ Wrong: ${iconScore.wrong}`;
