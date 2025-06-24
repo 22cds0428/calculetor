@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Calculator & Math Quiz</title>
+    <meta charset="UTF-8">
+    <title>Calculator & Math Quizzes</title>
     <style>
         body {
-            background-color:rgb(18, 18, 18);
+            background-color: #121212;
             color: #e0e0e0;
             font-family: 'Segoe UI', 'Gill Sans', sans-serif;
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            flex-wrap: wrap;
             min-height: 100vh;
             margin: 0;
             padding: 40px;
             gap: 40px;
-            
         }
 
-        .cal, .random {
+        .cal, .random, .icon-quiz {
             background: #1e1e1e;
             border: 1px solid #333;
             border-radius: 16px;
             padding: 30px 25px;
-            box-shadow: 0 8px 10px rgb(8, 137, 241);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
             width: 320px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgb(7, 84, 250);
         }
 
-        .cal:hover, .random:hover {
+        .cal:hover, .random:hover, .icon-quiz:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
         }
@@ -38,6 +38,10 @@
             margin-bottom: 25px;
             font-size: 26px;
             color: #00bcd4;
+        }
+
+        .icon-quiz h1 {
+            color: #ffc107;
         }
 
         input[type="number"] {
@@ -50,7 +54,6 @@
             color: #e0e0e0;
             font-size: 16px;
             transition: border-color 0.3s ease;
-            box-shadow: 0 12px 30px rgb(0, 0, 0);
         }
 
         input[type="number"]:focus {
@@ -64,13 +67,12 @@
             margin-top: 12px;
             border: none;
             border-radius: 8px;
-            background:rgb(12, 89, 99);
+            background: #00bcd4;
             color: #fff;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: background 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 2px 10px rgb(0, 0, 0);
         }
 
         button:hover {
@@ -78,7 +80,7 @@
             transform: scale(1.02);
         }
 
-        #result, #quiz-result, #quiz-score {
+        #result, #quiz-result, #quiz-score, #icon-result {
             display: block;
             margin-top: 20px;
             padding: 12px;
@@ -99,65 +101,66 @@
             margin: 15px 0;
             font-size: 18px;
         }
+
+        p#icon-question {
+            margin: 20px 0;
+            font-size: 32px;
+        }
     </style>
 </head>
 <body>
 
 <div class="cal">
     <h1>Calculator</h1>
-    number 1: <input type="number" id="no1" placeholder="Enter 1st no"><br><br>
+    number 1: <input type="number" id="no1" placeholder="Enter 1st no"><br>
     number 2: <input type="number" id="no2" placeholder="Enter 2nd no"><br>
     <button onclick="add()">Addition</button>
-    <button onclick="substrack()">Subtraction</button>
-    <button onclick="multiple()">Multiplication</button>
+    <button onclick="subtract()">Subtraction</button>
+    <button onclick="multiply()">Multiplication</button>
     <button onclick="divide()">Division</button>
-    <button onclick="clearFields()" style="background-color:gray">Clear</button>
+    <button onclick="clearFields()">Clear</button>
     <span id="result">result</span>
 </div>
 
 <div class="random">
     <h1>🎯 Random Math Quiz</h1>
-    <p id="timer" style="font-size: 18px; margin-top: 10px; color: #0af;">⏱️ Time: 15s</p>
+    <p id="timer">⏱️ Time: 15s</p>
     <p id="quiz-question">Click "Start Quiz" to begin!</p>
     <input type="number" id="quiz-answer" placeholder="Your answer">
-    <br>
     <button onclick="checkQuizAnswer()">Submit Answer</button>
-    <button onclick="generateQuiz()" style="background-color:green">Start Quiz</button>
-    <button onclick="stopQuiz()" style="background-color:red">Stop Quiz</button>
-
-    <br>
+    <button onclick="generateQuiz()">Start Quiz</button>
+    <button onclick="stopQuiz()">Stop Quiz</button>
     <span id="quiz-result"></span>
-    <div id="quiz-score" style="margin-top: 10px;"></div>
+    <div id="quiz-score"></div>
+</div>
+
+<div class="icon-quiz">
+    <h1>🧩 Icon Addition/Subtraction</h1>
+    <p id="icon-question">Click "Start Icon Quiz" to begin!</p>
+    <input type="number" id="icon-answer" placeholder="Your answer">
+    <button onclick="checkIconAnswer()">Submit Answer</button>
+    <button onclick="generateIconQuiz()">Start Icon Quiz</button>
+    <span id="icon-result"></span>
 </div>
 
 <script>
-    let correctAnswer = null;
-    let timerInterval;
-    let timeLeft = 15;
-    let score = { correct: 0, wrong: 0 };
-
-    // 🔊 Sound Effects
-    const correctSound = new Audio("correct-choice-43861.mp3");     // change to your correct sound file
-    const wrongSound = new Audio("mixkit-wrong-long-buzzer-954.wav");         // change to your wrong sound file
-    const timeoutSound = new Audio("ticking-bomb-90319.mp3");     // change to your timeout sound file
-
     // Calculator functions
     function add() {
         let no1 = parseFloat(document.getElementById("no1").value);
         let no2 = parseFloat(document.getElementById("no2").value);
-        document.getElementById("result").innerText = 'result is ' + (no1 + no2);
+        document.getElementById("result").innerText = 'Result: ' + (no1 + no2);
     }
 
-    function substrack() {
+    function subtract() {
         let no1 = parseFloat(document.getElementById("no1").value);
         let no2 = parseFloat(document.getElementById("no2").value);
-        document.getElementById("result").innerText = 'result is ' + (no1 - no2);
+        document.getElementById("result").innerText = 'Result: ' + (no1 - no2);
     }
 
-    function multiple() {
+    function multiply() {
         let no1 = parseFloat(document.getElementById("no1").value);
         let no2 = parseFloat(document.getElementById("no2").value);
-        document.getElementById("result").innerText = 'result is ' + (no1 * no2);
+        document.getElementById("result").innerText = 'Result: ' + (no1 * no2);
     }
 
     function divide() {
@@ -167,7 +170,7 @@
             document.getElementById("result").innerText = "❌ Cannot divide by zero";
             return;
         }
-        document.getElementById("result").innerText = 'result is ' + (no1 / no2).toFixed(2);
+        document.getElementById("result").innerText = 'Result: ' + (no1 / no2).toFixed(2);
     }
 
     function clearFields() {
@@ -175,6 +178,12 @@
         document.getElementById("no2").value = "";
         document.getElementById("result").innerText = "result";
     }
+
+    // Random math quiz
+    let correctAnswer = null;
+    let timerInterval;
+    let timeLeft = 15;
+    let score = { correct: 0, wrong: 0 };
 
     function updateScoreDisplay() {
         document.getElementById("quiz-score").innerText = `✅ Score: ${score.correct} | ❌ Wrong: ${score.wrong}`;
@@ -216,12 +225,10 @@
         }
 
         if (Math.abs(userAnswer - correctAnswer) < 0.01) {
-            correctSound.play();
             resultEl.innerText = "✅ Correct!";
             resultEl.style.color = "lightgreen";
             score.correct++;
         } else {
-            wrongSound.play();
             resultEl.innerText = `❌ Incorrect. Correct answer: ${correctAnswer}`;
             resultEl.style.color = "red";
             score.wrong++;
@@ -230,8 +237,7 @@
         document.getElementById("quiz-answer").disabled = true;
         document.querySelector('button[onclick="checkQuizAnswer()"]').disabled = true;
         updateScoreDisplay();
-
-        setTimeout(generateQuiz, 2000); // auto-next after 2 seconds
+        setTimeout(generateQuiz, 2000);
     }
 
     function startTimer() {
@@ -244,7 +250,6 @@
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                timeoutSound.play();
                 document.getElementById("quiz-result").innerText = `⏰ Time's up! Correct answer: ${correctAnswer}`;
                 document.getElementById("quiz-result").style.color = "orange";
                 document.getElementById("quiz-answer").disabled = true;
@@ -257,13 +262,61 @@
     }
 
     function stopQuiz() {
-    clearInterval(timerInterval);
-    document.getElementById("quiz-result").innerText = "🛑 Quiz stopped.";
-    document.getElementById("quiz-result").style.color = "yellow";
-    document.getElementById("quiz-answer").disabled = true;
-    document.querySelector('button[onclick="checkQuizAnswer()"]').disabled = true;
-}
+        clearInterval(timerInterval);
+        document.getElementById("quiz-result").innerText = "🛑 Quiz stopped.";
+        document.getElementById("quiz-result").style.color = "yellow";
+        document.getElementById("quiz-answer").disabled = true;
+        document.querySelector('button[onclick="checkQuizAnswer()"]').disabled = true;
+    }
 
+    // Icon quiz
+    let iconCorrectAnswer = null;
+
+    function generateIconQuiz() {
+        const icons = ['🏀', '🌳', '🏏', '🍎', '🐶', '⭐'];
+        const icon = icons[Math.floor(Math.random() * icons.length)];
+        const num1 = Math.floor(Math.random() * 5) + 1;
+        const num2 = Math.floor(Math.random() * 5) + 1;
+        const ops = ['+', '-'];
+        const op = ops[Math.floor(Math.random() * ops.length)];
+
+        let question = '';
+        let answer = 0;
+
+        if (op === '+') {
+            question = `${icon.repeat(num1)} + ${icon.repeat(num2)}`;
+            answer = num1 + num2;
+        } else {
+            const big = Math.max(num1, num2);
+            const small = Math.min(num1, num2);
+            question = `${icon.repeat(big)} - ${icon.repeat(small)}`;
+            answer = big - small;
+        }
+
+        iconCorrectAnswer = answer;
+        document.getElementById("icon-question").innerText = question;
+        document.getElementById("icon-answer").value = "";
+        document.getElementById("icon-result").innerText = "";
+    }
+
+    function checkIconAnswer() {
+        const userAnswer = parseInt(document.getElementById("icon-answer").value);
+        const resultEl = document.getElementById("icon-result");
+
+        if (isNaN(userAnswer)) {
+            resultEl.innerText = "⚠️ Please enter a number.";
+            resultEl.style.color = "orange";
+            return;
+        }
+
+        if (userAnswer === iconCorrectAnswer) {
+            resultEl.innerText = "✅ Correct!";
+            resultEl.style.color = "lightgreen";
+        } else {
+            resultEl.innerText = `❌ Incorrect. Correct answer: ${iconCorrectAnswer}`;
+            resultEl.style.color = "red";
+        }
+    }
 </script>
 
 </body>
