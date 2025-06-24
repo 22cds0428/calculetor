@@ -20,10 +20,10 @@
 
         .cal, .random, .icon-quiz {
             background: #1e1e1e;
-            border: 1px solid #333;
-            border-radius: 16px;
+            border: 1px solid rgb(1, 107, 245);
+            border-radius: 26px;
             padding: 30px 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 20px rgba(12, 77, 161, 0.6);
             width: 320px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -40,10 +40,7 @@
             color: #00bcd4;
         }
 
-        .icon-quiz h1 {
-            color: #ffc107;
-        }
-
+        
         input[type="number"] {
             width: 90%;
             padding: 10px 15px;
@@ -54,6 +51,7 @@
             color: #e0e0e0;
             font-size: 16px;
             transition: border-color 0.3s ease;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.94);
         }
 
         input[type="number"]:focus {
@@ -66,10 +64,11 @@
             padding: 12px 0;
             margin-top: 12px;
             border: none;
-            border-radius: 8px;
-            background: #00bcd4;
+            border-radius: 18px;
+            background:rgb(8, 120, 134);
             color: #fff;
             font-size: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.94);
             font-weight: 600;
             cursor: pointer;
             transition: background 0.3s ease, transform 0.2s ease;
@@ -80,7 +79,7 @@
             transform: scale(1.02);
         }
 
-        #result, #quiz-result, #quiz-score, #icon-result {
+        #result, #quiz-result, #quiz-score, #icon-result, #icon-score {
             display: block;
             margin-top: 20px;
             padding: 12px;
@@ -91,20 +90,15 @@
             word-wrap: break-word;
         }
 
-        p#timer {
+        p#timer, p#icon-timer {
             font-weight: bold;
             color: #00bcd4;
             margin-bottom: 10px;
         }
 
-        p#quiz-question {
-            margin: 15px 0;
-            font-size: 18px;
-        }
-
-        p#icon-question {
+        p#quiz-question, p#icon-question {
             margin: 20px 0;
-            font-size: 32px;
+            font-size: 28px;
         }
     </style>
 </head>
@@ -118,7 +112,7 @@
     <button onclick="subtract()">Subtraction</button>
     <button onclick="multiply()">Multiplication</button>
     <button onclick="divide()">Division</button>
-    <button onclick="clearFields()">Clear</button>
+    <button onclick="clearFields()" style="background-color:rgba(39, 36, 36, 0.79)">Clear</button>
     <span id="result">result</span>
 </div>
 
@@ -127,23 +121,31 @@
     <p id="timer">⏱️ Time: 15s</p>
     <p id="quiz-question">Click "Start Quiz" to begin!</p>
     <input type="number" id="quiz-answer" placeholder="Your answer">
-    <button onclick="checkQuizAnswer()">Submit Answer</button>
-    <button onclick="generateQuiz()">Start Quiz</button>
-    <button onclick="stopQuiz()">Stop Quiz</button>
+    <button onclick="checkQuizAnswer()" >Submit Answer</button>
+    <button onclick="generateQuiz()" style="background-color:green">Start Quiz</button>
+    <button onclick="stopQuiz()" style="background-color:red">Stop Quiz</button>
     <span id="quiz-result"></span>
     <div id="quiz-score"></div>
 </div>
 
 <div class="icon-quiz">
-    <h1>🧩 Icon Addition/Subtraction</h1>
+    <h1>🧩 Icon +/- Quiz</h1>
+    <p id="icon-timer">⏱️ Time: 15s</p>
     <p id="icon-question">Click "Start Icon Quiz" to begin!</p>
     <input type="number" id="icon-answer" placeholder="Your answer">
     <button onclick="checkIconAnswer()">Submit Answer</button>
-    <button onclick="generateIconQuiz()">Start Icon Quiz</button>
+    <button onclick="generateIconQuiz()" style="background-color:green">Start Icon Quiz</button>
+    <button onclick="stopIconQuiz()"  style="background-color:red">Stop Icon Quiz</button>
     <span id="icon-result"></span>
+    <div id="icon-score"></div>
 </div>
 
 <script>
+    // 🔊 Sound effects (use your own files)
+    const correctSound = new Audio("correct-choice-43861.mp3");
+    const wrongSound = new Audio("mixkit-wrong-long-buzzer-954.wav");
+    const timeoutSound = new Audio("ticking-bomb-90319.mp3");
+
     // Calculator functions
     function add() {
         let no1 = parseFloat(document.getElementById("no1").value);
@@ -225,10 +227,12 @@
         }
 
         if (Math.abs(userAnswer - correctAnswer) < 0.01) {
+            correctSound.play();
             resultEl.innerText = "✅ Correct!";
             resultEl.style.color = "lightgreen";
             score.correct++;
         } else {
+            wrongSound.play();
             resultEl.innerText = `❌ Incorrect. Correct answer: ${correctAnswer}`;
             resultEl.style.color = "red";
             score.wrong++;
@@ -250,6 +254,7 @@
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
+                timeoutSound.play();
                 document.getElementById("quiz-result").innerText = `⏰ Time's up! Correct answer: ${correctAnswer}`;
                 document.getElementById("quiz-result").style.color = "orange";
                 document.getElementById("quiz-answer").disabled = true;
@@ -271,8 +276,16 @@
 
     // Icon quiz
     let iconCorrectAnswer = null;
+    let iconTimerInterval;
+    let iconTimeLeft = 15;
+    let iconScore = { correct: 0, wrong: 0 };
+
+    function updateIconScore() {
+        document.getElementById("icon-score").innerText = `✅ Score: ${iconScore.correct} | ❌ Wrong: ${iconScore.wrong}`;
+    }
 
     function generateIconQuiz() {
+        clearInterval(iconTimerInterval);
         const icons = ['🏀', '🌳', '🏏', '🍎', '🐶', '⭐'];
         const icon = icons[Math.floor(Math.random() * icons.length)];
         const num1 = Math.floor(Math.random() * 5) + 1;
@@ -297,9 +310,13 @@
         document.getElementById("icon-question").innerText = question;
         document.getElementById("icon-answer").value = "";
         document.getElementById("icon-result").innerText = "";
+        document.getElementById("icon-answer").disabled = false;
+        document.querySelector('button[onclick="checkIconAnswer()"]').disabled = false;
+        startIconTimer();
     }
 
     function checkIconAnswer() {
+        clearInterval(iconTimerInterval);
         const userAnswer = parseInt(document.getElementById("icon-answer").value);
         const resultEl = document.getElementById("icon-result");
 
@@ -310,12 +327,51 @@
         }
 
         if (userAnswer === iconCorrectAnswer) {
+            correctSound.play();
             resultEl.innerText = "✅ Correct!";
             resultEl.style.color = "lightgreen";
+            iconScore.correct++;
         } else {
+            wrongSound.play();
             resultEl.innerText = `❌ Incorrect. Correct answer: ${iconCorrectAnswer}`;
             resultEl.style.color = "red";
+            iconScore.wrong++;
         }
+
+        document.getElementById("icon-answer").disabled = true;
+        document.querySelector('button[onclick="checkIconAnswer()"]').disabled = true;
+        updateIconScore();
+        setTimeout(generateIconQuiz, 2000);
+    }
+
+    function startIconTimer() {
+        iconTimeLeft = 15;
+        document.getElementById("icon-timer").innerText = `⏱️ Time: ${iconTimeLeft}s`;
+
+        iconTimerInterval = setInterval(() => {
+            iconTimeLeft--;
+            document.getElementById("icon-timer").innerText = `⏱️ Time: ${iconTimeLeft}s`;
+
+            if (iconTimeLeft <= 0) {
+                clearInterval(iconTimerInterval);
+                timeoutSound.play();
+                document.getElementById("icon-result").innerText = `⏰ Time's up! Correct answer: ${iconCorrectAnswer}`;
+                document.getElementById("icon-result").style.color = "orange";
+                document.getElementById("icon-answer").disabled = true;
+                document.querySelector('button[onclick="checkIconAnswer()"]').disabled = true;
+                iconScore.wrong++;
+                updateIconScore();
+                setTimeout(generateIconQuiz, 2000);
+            }
+        }, 1000);
+    }
+
+    function stopIconQuiz() {
+        clearInterval(iconTimerInterval);
+        document.getElementById("icon-result").innerText = "🛑 Icon Quiz stopped.";
+        document.getElementById("icon-result").style.color = "yellow";
+        document.getElementById("icon-answer").disabled = true;
+        document.querySelector('button[onclick="checkIconAnswer()"]').disabled = true;
     }
 </script>
 
