@@ -97,8 +97,19 @@
         }
 
         p#quiz-question, p#icon-question {
-            margin: 20px 0;
+            margin: 2px 0;
             font-size: 28px;
+        }
+        
+         .random select {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            border: 1px solid blue;
+            background: #222;
+            color: #e0e0e0;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -117,11 +128,16 @@
 </div>
 
 <div class="random">
-    <h1>🎯 Random Math Quiz</h1>
+    <h1>🎯 Simple Math Game</h1>
     <p id="timer">⏱️ Time: 15s</p>
+    <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="advanced">Advanced</option>
+    </select>
     <p id="quiz-question">Click "Start Quiz" to begin!</p>
     <input type="number" id="quiz-answer" placeholder="Your answer">
-    <button onclick="checkQuizAnswer()" >Submit Answer</button>
+    <button onclick="checkQuizAnswer()">Submit Answer</button>
     <button onclick="generateQuiz()" style="background-color:green">Start Quiz</button>
     <button onclick="stopQuiz()" style="background-color:red">Stop Quiz</button>
     <span id="quiz-result"></span>
@@ -129,7 +145,7 @@
 </div>
 
 <div class="icon-quiz">
-    <h1>🧩 Icon +/- Quiz</h1>
+    <h1>🧩 Icon +/- Game</h1>
     <p id="icon-timer">⏱️ Time: 15s</p>
     <p id="icon-question">Click "Start Icon Quiz" to begin!</p>
     <input type="number" id="icon-answer" placeholder="Your answer">
@@ -182,6 +198,7 @@
     }
 
     // Random math quiz
+   
     let correctAnswer = null;
     let timerInterval;
     let timeLeft = 15;
@@ -193,10 +210,24 @@
 
     function generateQuiz() {
         clearInterval(timerInterval);
-        const num1 = Math.floor(Math.random() * 20) + 1;
-        const num2 = Math.floor(Math.random() * 20) + 1;
-        const operations = ['+', '-', '*', '/'];
-        const op = operations[Math.floor(Math.random() * operations.length)];
+
+        const difficulty = document.getElementById("difficulty").value;
+        let numRange, ops;
+
+        if (difficulty === "easy") {
+            numRange = 10;
+            ops = ['+', '-'];
+        } else if (difficulty === "medium") {
+            numRange = 20;
+            ops = ['+', '-', '*'];
+        } else {
+            numRange = 50;
+            ops = ['+', '-', '*', '/'];
+        }
+
+        const num1 = Math.floor(Math.random() * numRange) + 1;
+        const num2 = Math.floor(Math.random() * numRange) + 1;
+        const op = ops[Math.floor(Math.random() * ops.length)];
         let question = `${num1} ${op} ${num2}`;
 
         document.getElementById("quiz-question").innerText = "Solve: " + question;
