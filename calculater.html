@@ -219,10 +219,10 @@ p#quiz-question, p#icon-question {
 
     // Random math quiz
    
-    let correctAnswer = null;
+    {% comment %} let correctAnswer = null;
     let timerInterval;
     let timeLeft = 15;
-    let score = { correct: 0, wrong: 0 };
+    let score = { correct: 0, wrong: 0 }; {% endcomment %}
 
     function updateScoreDisplay() {
         document.getElementById("quiz-score").innerText = `✅ Score: ${score.correct} | ❌ Wrong: ${score.wrong}`;
